@@ -1,0 +1,283 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+	<meta content="yes" name="apple-mobile-web-app-capable">
+	<meta content="black" name="apple-mobile-web-app-status-bar-style">
+	<meta content="telephone=no" name="format-detection">
+	<meta content="email=no" name="format-detection">
+	<link rel="stylesheet" href="css/style.css">
+	<script type="text/javascript">
+		var json2=["10","100","1000","2000","3000","4500","5000","7000","7500","8000","9100","10000","10010","12000","14000"]
+
+	</script>
+</head>
+<body>
+<!--main-->
+<div class="wrapper">
+	<!--Head end-->
+	<section class="box">
+		<!--mangerG-->
+		<div class="mangerG">
+			<!--search end-->
+			<div class="mangerG_top">
+				<span class="ml20">
+					<a class="mange_peo" href="#"></a>
+				</span>
+				<span class="mr20">
+					<a class="mange_hf mr20" href="#"></a>
+					<a class="mange_she" href="#"></a>
+				</span>
+			</div>
+			<!--Movie-->
+			<div class="movie_box" id="movie_box">
+				<div class="yuan1"><i></i></div>
+				<div class="yuan2"></div>
+				<div class="yuan3"></div>
+				<div class="txt"><em>68</em><sub>%</sub></div>
+				<div class="dian1"></div>
+				<div class="dian2"></div>
+				<s class="dian3"></s>
+			</div>
+			<a class="clearbtn" href="#"><span>一键内存加速</span><span>清理完成</span><i></i></a>
+			<i class="bannerDown"></i>
+		</div>
+		<!--mangerG end-->
+		<!--nav-->
+		<dl class="mangerGBottom">
+			<dt>
+				<h4>应用升级</h4>
+				<div class="clearfix">
+					<em class="img"><img src="img/icons/1.png" alt=""></em>
+					<em class="img"><img src="img/icons/2.png" alt=""></em>
+					<em class="img"><img src="img/icons/3.png" alt=""></em>
+					<em class="img"><img src="img/icons/5.png" alt=""></em>
+					<span>…有<em class="forg">10</em>个应用可更新</span>
+				</div>
+			</dt>
+			<dd><a href="#">10</a></dd>
+		</dl>
+		<!--nav end-->
+	</section>
+	<!--Head end-->
+	<!--管理功能-->
+	<section class="box mt20">
+		<ul class="manage_GUl">
+			<li>
+				<a class="app_un" href="#">应用卸载</a>
+			</li>
+			<li>
+				<a class="rub_clear" href="#">清理垃圾</a>
+			</li>
+			<li>
+				<a class="file_manage" href="#">文件管理</a>
+			</li>
+		</ul>
+		<ul class="manage_GUl">
+			<li>
+				<a class="boot_opt" href="#">开机优化</a>
+			</li>
+			<li>
+				<a class="doc_rec" href="#">收到的文件</a>
+			</li>
+			<li>
+				<a class="pc_connect" href="#">连接电脑</a>
+			</li>
+		</ul>
+		<ul class="manage_GUl">
+			<li>
+				<a class="mes_board" href="#">开机优化</a>
+			</li>
+			<li>
+				<a class="about" href="#">收到的文件</a>
+			</li>
+			<li></li>
+		</ul>
+	</section>
+	<!--管理功能 end-->
+	<!--亲，到底啦-->
+	<div class="downLast"><i></i>亲，到底啦~</div>
+</div>
+<!--main end-->
+<!--navigation-->
+<ul class="navigation">
+	<li><a href="index.htm">推荐</a></li>
+	<li><a href="#">游戏</a></li>
+	<li><a href="#">软件</a></li>
+	<li><a href="#">发现</a></li>
+	<li><a class="click" href="mange.htm">管理</a></li>	
+</ul>
+<!--navigation end-->
+<script type="text/javascript" src="js/zepto.min.js"></script>
+<!--bannerG js-->
+<script type="text/javascript" src="js/swipe.js"></script>
+
+<script type="text/javascript">
+	
+    
+    $(function(){
+    			
+		var hh = $(".bannerG .bannerDown").height();
+		$(window).on("touchmove scroll",function(){
+			var h=document.body.scrollTop;
+			var $searchBox = $(".searchBox");
+			var $bannerDown =$(".bannerG .bannerDown")
+			var h2 = $(".bannerG").height();
+			var h1 = $searchBox.height();
+			var bl = h/(h2-h1);
+			
+			
+			if(h>=0 && bl<=0.5){ 
+				$searchBox.removeClass("searchBoxSq").css("background","rgba(38,191,128,"+bl+")")
+			}else if(h>=0 && bl<=1 && bl>0.5){ 
+				$searchBox.addClass("searchBoxSq").css({"background":"rgba(38,191,128,"+bl+")","opacity":bl})
+			}else{ 
+				$searchBox.addClass("searchBoxSq").css("background","rgba(38,191,128,1)")
+			}
+
+
+			if(h>0 && h<h2){ 
+				$bannerDown.css("height",hh*(1-bl))
+			}else{ 
+				$bannerDown.css("height",hh)
+			}
+		})	
+
+
+		
+			
+			
+		$(".navigation a").on("click",function(){
+			$(this).closest(".navigation").find(".click").removeClass("click");
+			$(this).addClass("click")
+		})
+		
+
+
+		
+
+		$(".clearbtn").on("click",function(){
+
+			if($(".clearbtn").hasClass("begindh")){ 
+				
+				return false;
+			}
+			$(".clearbtn").addClass("begindh");
+			$(".clearbtn span").css("transform","translateY(0)")
+
+			$(this).addClass("donghua");
+			$(".yuan1").addClass("donghua");
+			$(".dian1").addClass("donghua");
+			$(".dian2").addClass("donghua");
+			var $yuan2 = $(".yuan2");
+
+
+			
+			/*setTimeout(function(){
+					$(".dian3.donghua").remove();
+			},2200)*/
+
+			txt(56);
+			
+		})
+
+    })
+
+
+	/*传入加速后内存占用比*/
+	function txt(num){ 
+		var $txt = $(".txt").find("em");
+		var Time1;
+		var Time2;
+		//dian3();
+		//先数值到100
+		Time1 = setInterval(function(){
+			
+			var text = $txt.text();
+			if(text<100){
+				dian3();
+				$txt.text(Math.floor(text)+1)
+			}else{
+				setTimeout(time2,300);
+				clearInterval(Time1);
+
+				
+			}
+		},20)
+
+
+		//数值从100- 传入加速后内存占用比的值
+		function time2(){
+			$(".dian3").remove();
+			Time2 =setInterval(function(){
+
+				var text2 = $txt.text();
+				if(text2>num){
+					dian3();
+					$txt.text(Math.floor(text2)-1)
+				}else{ 
+					clearInterval(Time2);
+					$(".clearbtn span").css("transform","translateY(-100%)")
+					$(".donghua").removeClass("donghua");
+					$(".clearbtn").removeClass("begindh");
+					$(".dian3").remove();
+				}
+			},20)
+		}
+
+	}
+
+	//随机生成圆点，数量为每个百分点
+	function dian3(){ 
+		var $dian4 = $(".dian4");
+			var $movie_box =$("#movie_box");
+			var $txt = $(".txt");
+			var tops = $txt.position().top+$txt.height()/2-$dian4.height()/2;
+			var lefts = $txt.position().left+$txt.width()/2-$dian4.width()/2;
+
+
+
+			
+			var oFrag = document.createDocumentFragment();
+			//for(var i =0;i<1;i++){
+				var oS = document.createElement("s");	
+			
+				oS.className="dian3";
+
+				var radom = Math.random();
+
+				if(radom<=0.25){ 
+					oS.style.top = radom*$movie_box.height() + "px";
+					oS.style.left = -$dian4.width() +"px";
+				}else if(radom>0.25 && radom<=0.5){ 
+					oS.style.top = -$dian4.height() + "px";
+					oS.style.left = radom*$movie_box.width() +"px";
+				}else if(radom>0.5 && radom<=0.75){ 
+					oS.style.top = radom*$movie_box.height() + "px";
+					oS.style.left = $movie_box.width()+$dian4.width() +"px";
+				}else if(radom>0.75 && radom<=1){ 
+					oS.style.top = $movie_box.height()+$dian4.height() + "px";
+					oS.style.left = radom*$movie_box.width() +"px";
+				}
+
+
+				
+				oS.style.transform = "scale("+Math.random()*0.7+")";
+				oS.style.opacity = radom*0.8;
+				oFrag.appendChild(oS)
+			//}
+
+			$movie_box[0].appendChild(oFrag)
+
+			
+			setTimeout(function(){
+				$(".dian3").addClass("donghua");
+				$(".dian3").css({"top":tops,"left":lefts,"opacity":0.1})
+			},10)
+
+			
+	}
+</script>
+</body>
+</html>
