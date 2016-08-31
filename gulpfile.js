@@ -16,15 +16,16 @@ var minifycss = require('gulp-minify-css'),//CSS压缩
     notify = require('gulp-notify'),//更动通知
     autoprefixer = require('gulp-autoprefixer'),//自动添加前缀
     del = require('del'),
-    webserver = require('gulp-webserver'),//服务器
+    browserSync = require('browser-sync'),//服务器
     cache = require('gulp-cache'),//图片快取，只有更改过得图片会进行压缩
     compass      = require('gulp-compass'),//编译compass
+    runSequence = require('run-sequence'),    //用于按顺序执行 gulp 任务的插件
     sass      = require('gulp-sass');//编译sass
 
 
 
 var project = {
-    src: './app/',
+    src: 'app/',
     dist: 'dist/',
     sass: '_source/sass/',
     css:'css/',
@@ -43,56 +44,67 @@ var project = {
 
 //html
 gulp.task('html', function() {
-  return gulp.src(project.src +'*.{html,htm}')
-    .pipe(gulp.dest(project.dist))
-    .pipe(livereload())
-    .pipe(notify({ message: 'html task complete' }));
+  return gulp.src(project.src +'**/*.{html,htm}')
+    .pipe(gulp.dest(project.dist));
+    //.pipe(browserSync.reload({
+    //  stream: true
+    //}));
+    //.pipe(notify({ message: 'html task complete' }));
 });
 
 //js
 gulp.task('js', function() {
   return gulp.src(project.src + project.js +'**/*.js')
     .pipe(gulp.dest( project.dist + project.js ))
+    //.pipe(browserSync.reload({
+    //  stream: true
+    //}))
     //.pipe(rename({ suffix: '.min' }))//js，重命名
     //.pipe(uglify())//压缩js
     //.pipe(gulp.dest( project.dist + project.js ))
-    .pipe(livereload())
+    //.pipe(livereload())
     .pipe(notify({ message: 'js task complete' }));
 });
 
 // css
 gulp.task('css', function() {
-  return gulp.src(project.src + project.sass +'*.{scss,sass}')
+  return gulp.src(project.src + project.sass +'**/*.{scss,sass}')
     .pipe(sass({ style: 'compressed' }).on('error', sass.logError))
     .pipe(autoprefixer({
-            browsers: ['last 2 versions','ie > 8','ff > 20','chrome > 34' ,'safari > 6'],
-            cascade: false
-        }))
-    .pipe(gulp.dest(project.src + project.css))
-    .pipe(rename({ suffix: '.min' }))
-    .pipe(minifycss())
-    .pipe(gulp.dest(project.dist + project.css))
-    .pipe(livereload())
-    .pipe(notify({ message: 'css task complete' }));
-});
-
-//compass
-gulp.task('compass', function() {
-  return gulp.src(project.src + project.sass +'*.{scss,sass}')
-    .pipe(compass({
-      css: project.src + project.css,
-      sass: project.src + project.sass,
-      image: project.src + project.images
-    }))
-    .pipe(autoprefixer({
-            browsers: ['last 2 versions','ie > 8','ff > 20','chrome > 34' ,'safari > 6'],
+            browsers: ['last 2 versions','>1%','ie > 8','ff > 20','chrome > 34' ,'safari > 6'],
             cascade: false
         }))
     .pipe(gulp.dest(project.src + project.css))
     //.pipe(rename({ suffix: '.min' }))
     .pipe(minifycss())
     .pipe(gulp.dest(project.dist + project.css))
-    .pipe(livereload())
+    //.pipe(browserSync.reload({
+    //  stream: true
+    //}))
+    //.pipe(livereload())
+    .pipe(notify({ message: 'css task complete' }));
+});
+
+//compass
+gulp.task('compass', function() {
+  return gulp.src(project.src + project.sass +'**/*.{scss,sass}')
+    .pipe(compass({
+      css: project.src + project.css,
+      sass: project.src + project.sass,
+      image: project.src + project.images
+    }))
+    .pipe(autoprefixer({
+            browsers: ['last 2 versions','>1%','ie > 8','ff > 20','chrome > 34' ,'safari > 6'],
+            cascade: false
+        }))
+    .pipe(gulp.dest(project.src + project.css))
+    //.pipe(rename({ suffix: '.min' }))
+    .pipe(minifycss())
+    .pipe(gulp.dest(project.dist + project.css))
+    //.pipe(browserSync.reload({
+    //  stream: true
+    //}))
+    //.pipe(livereload())
     .pipe(notify({ message: 'compass task complete' }));
 });
 
@@ -100,18 +112,24 @@ gulp.task('compass', function() {
 gulp.task('images', function() {
   return gulp.src(project.src + project.images+'**/*')
     .pipe(cache(imagemin({ optimizationLevel: 3, progressive: true, interlaced: true })))
-    .pipe(gulp.dest(project.dist+ project.images))
-    .pipe(livereload())
-    .pipe(notify({ message: 'Images task complete' }));
+    .pipe(gulp.dest(project.dist+ project.images));
+    //.pipe(browserSync.reload({
+    //  stream: true
+    //}))
+    //.pipe(livereload());
+    //.pipe(notify({ message: 'Images task complete' }));
 });
 
 // Img
 gulp.task('imgs', function() {
   return gulp.src(project.src + project.img+'**/*')
     .pipe(cache(imagemin({ optimizationLevel: 3, progressive: true, interlaced: true })))
-    .pipe(gulp.dest(project.dist+ project.img))
-    .pipe(livereload())
-    .pipe(notify({ message: 'Img task complete' }));
+    .pipe(gulp.dest(project.dist+ project.img));
+    //.pipe(browserSync.reload({
+    //  stream: true
+    //}))
+    //.pipe(livereload());
+    //.pipe(notify({ message: 'Img task complete' }));
 });
 
 
@@ -146,7 +164,8 @@ gulp.task('sprite', function () {
 
 // Clean
 gulp.task('clean', function(cb) {
-    del(['dist','dist2',project.src + project.css+'**/*.css'], cb)
+   return  del(['dist','.sass-cache',project.src + project.css+'**/*.css'], cb);
+   
 });
 
 
@@ -157,17 +176,17 @@ gulp.task('watch', function() {
 
   gulp.watch(project.src + project.sass +'*.{scss,sass}', ['css']);
 
-  gulp.watch(project.src + project.sass +'*.{scss,sass}', ['compass']);
+  //gulp.watch(project.src + project.sass +'*.{scss,sass}', ['compass']);
  
   gulp.watch(project.src + project.js +'**/*.js', ['js']);
  
   gulp.watch(project.src + project.images+'**/*', ['images']);
 
-  gulp.watch(project.src + project.img+'**/*', ['imgs']);
+  //gulp.watch(project.src + project.img+'**/*', ['imgs']);
  
-  livereload.listen();
+  //livereload.listen();
  
-  gulp.watch([project.dist+'**']).on('change', livereload.changed);
+  //gulp.watch([project.dist+'**']).on('change', livereload.changed);
  
 });
 
@@ -175,27 +194,48 @@ gulp.task('watch', function() {
 
 
 //Server
-gulp.task('server', function() {
-  gulp.src(project.dist)
-    .pipe(webserver({
-      livereload: true,
-      fallback: 'index.htm',
-      open: true
-    }));
-  gulp.start('watch');
+
+
+gulp.task('browsersync', function() {
+     browserSync({
+        notify: false,
+        port: 8888,
+        server: {
+            baseDir: ['app'],
+            index: '城市经理OA首页.htm',
+            routes: {
+                // '/bower_components': 'bower_components'
+            }
+        }
+    });
 });
 
 
 
+
+
 //Build
-gulp.task('build', ['clean','html','compass', 'js', 'images', 'imgs']);
+gulp.task('compass-build',function (callback){
 
+  runSequence('clean',['html','compass', 'js', 'images', 'imgs'],callback)
 
+});
+
+//
+gulp.task('css-build', function (callback) {
+
+  runSequence('clean', ['html','css', 'js', 'images'],callback)
+
+});
 
 
 
 // Default task
-gulp.task('default', ['build','server']);//定义默认任务 elseTask为其他任务，该示例没有定义elseTask任务
+gulp.task('default',function (callback){
+
+  runSequence('clean', ['html','css', 'js', 'images'],'watch',callback)
+
+});//定义默认任务 elseTask为其他任务，该示例没有定义elseTask任务
 
 //gulp.task(name[, deps], fn) 定义任务  name：任务名称 deps：依赖任务名称 fn：回调函数
 //gulp.src(globs[, options]) 执行任务处理的文件  globs：处理的文件路径(字符串或者字符串数组) 
